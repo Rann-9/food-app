@@ -25,6 +25,28 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           children: [
             Container(
+              width: 110,
+              height: 110,
+              margin: EdgeInsets.only(top: 26),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/photo_border.png',
+                  ),
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage('https://ui-avatars.com/api/?name=J+N'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            Container(
               width: double.infinity,
               margin: EdgeInsets.fromLTRB(
                 defaultMargin,

@@ -22,29 +22,6 @@ class _AddressPageState extends State<AddressPage> {
       },
       child: Column(
         children: [
-          // Image
-          Container(
-            width: 110,
-            height: 110,
-            margin: EdgeInsets.only(top: 26),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/photo_border.png',
-                ),
-              ),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage('https://ui-avatars.com/api/?name=J+N'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
           // Address
           Container(
             width: double.infinity,
