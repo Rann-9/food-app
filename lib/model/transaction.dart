@@ -10,7 +10,7 @@ enum TransactionStatus {
 class Transaction extends Equatable{
   final int? id;
   final Food? food;
-  final int? quantitiy;
+    final int? quantitiy;
   final int? total;
   final DateTime? dateTime;
   final TransactionStatus? status;
@@ -27,13 +27,13 @@ class Transaction extends Equatable{
   });
 
   Transaction copyWith({
-    required int id,
-    required Food food,
-    required int quantity,
-    required int total,
-    required DateTime dateTime,
-    required TransactionStatus status,
-    required User user,
+    int? id,
+    Food? food,
+    int? quantitiy,
+    int? total,
+    DateTime? dateTime,
+    TransactionStatus? status,
+    User? user,
 }) {
     return Transaction(
       id :id ?? this.id,

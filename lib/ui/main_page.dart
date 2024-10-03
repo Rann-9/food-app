@@ -1,17 +1,26 @@
 part of 'pages.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({super.key, this.initialPage = 0});
+
+  final int initialPage;
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int selectPage = 0;
-  PageController pageController = PageController(initialPage: 0);
+  int selectedPage = 0;
 
   @override
+  void initState(){
+    super.initState();
+    selectedPage = widget.initialPage;
+    pageController = PageController(initialPage: widget.initialPage);
+  }
+
+  PageController pageController = PageController(initialPage: 0);
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -27,7 +36,7 @@ class _MainPageState extends State<MainPage> {
               controller: pageController,
               onPageChanged: (index) {
                 setState(() {
-                  selectPage = index;
+                  selectedPage = index;
                 });
               },
               children: [
@@ -35,16 +44,10 @@ class _MainPageState extends State<MainPage> {
                   child: FoodPage(),
                 ),
                 Center(
-                  child: Text(
-                    'Screen 2',
-                    style: blackFontStyle1,
-                  ),
+                  child: OrderHistoryPage(),
                 ),
                 Center(
-                  child: Text(
-                    'Screen 3',
-                    style: blackFontStyle1,
-                  ),
+                  child: ProfilePage(),
                 ),
               ],
             ),
@@ -52,12 +55,12 @@ class _MainPageState extends State<MainPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: CustomBottomNavbar(
-              selectIndex: selectPage,
+              selectIndex: selectedPage,
               onTap: (int index) {
                 setState(() {
-                  selectPage = index;
+                  selectedPage = index;
                 });
-                pageController.jumpToPage(index);
+                pageController.jumpToPage(selectedPage);
               },
             ),
           )

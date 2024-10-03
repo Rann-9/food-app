@@ -4,11 +4,11 @@ class DetailPage extends StatefulWidget {
   const DetailPage({
     super.key,
     required this.onBackButtonPressed,
-    required this.food,
+    this.transaction,
   });
 
   final Function onBackButtonPressed;
-  final Food food;
+  final Transaction? transaction;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -35,8 +35,8 @@ class _DetailPageState extends State<DetailPage> {
               height: 300,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.food.picturePath ??
-                      'https://ui-avatars.com/api/?name=${widget.food.name}'),
+                  image: NetworkImage(widget.transaction?.food?.picturePath ??
+                      'https://ui-avatars.com/api/?name=${widget.transaction?.food?.name ?? ''}'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -96,7 +96,7 @@ class _DetailPageState extends State<DetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${widget.food.name}",
+                                  "${widget.transaction?.food?.name}",
                                   style: blackFontStyle2,
                                   maxLines: 1,
                                 ),
@@ -104,7 +104,7 @@ class _DetailPageState extends State<DetailPage> {
                                   width: 24,
                                 ),
                                 RatingStars(
-                                  rate: widget.food.rate,
+                                  rate: widget.transaction?.food?.rate,
                                 ),
                               ],
                             ),
@@ -170,7 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                           16,
                         ),
                         child: Text(
-                          widget.food!.description!,
+                          (widget.transaction?.food?.description ?? ''),
                           style: blackFontStyle3,
                           textAlign: TextAlign.justify,
                         ),
@@ -196,7 +196,8 @@ class _DetailPageState extends State<DetailPage> {
                           0,
                           16,
                         ),
-                        child: Text(widget.food!.ingredients!),
+                        child:
+                            Text(widget.transaction?.food?.ingredients ?? ''),
                       ),
                       // Price
                       Container(
@@ -223,7 +224,9 @@ class _DetailPageState extends State<DetailPage> {
                                       decimalDigits: 0,
                                       locale: 'id_ID')
                                   .format(
-                                quantity * widget.food!.price!,
+                                quantity *
+                                    (widget.transaction?.food?.price?.toInt() ??
+                                        0),
                               ),
                             ),
                           ],
@@ -241,7 +244,19 @@ class _DetailPageState extends State<DetailPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(
+                              PaymentPage(
+                                transaction: widget.transaction!.copyWith(quantitiy: quantity,
+                                  total: quantity * (widget.transaction!.food!.price!.toInt())
+                                ),
+                              ),
+                            );
+
+                            print('${quantity *
+                                (widget.transaction!.food!.price!
+                                    .toInt())}');
+                          },
                           child: Text(
                             'Order Now!',
                             style: blackFontStyle2.copyWith(

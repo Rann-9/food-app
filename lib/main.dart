@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_app/cubit/cubit.dart';
 import 'package:food_app/ui/pages.dart';
 import 'package:get/get.dart';
 
@@ -13,21 +14,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Food App',
-      theme: ThemeData(),
-      home: PaymentPage(
-        transaction: Transaction(
-          id: 3,
-          food: mockFoods[1],
-          quantitiy: 5,
-          total: (mockFoods[1].price! * 5 * 1.1).toInt() + 5000,
-          dateTime: DateTime.now(),
-          status: TransactionStatus.pending,
-          user: mockUser,
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => UserCubit()),
+        BlocProvider(create: (_) => FoodCubit()),
+        BlocProvider(create: (_) => TransactionCubit()),
+      ],
+      child: GetMaterialApp(
+        title: 'Food App',
+        theme: ThemeData(),
+        home: SignInPage(),
+        debugShowCheckedModeBanner: false,
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

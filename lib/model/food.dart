@@ -1,5 +1,7 @@
 part of 'models.dart';
 
+enum FoodType { new_food, popular, recommended }
+
 class Food extends Equatable {
   final int? id;
   final String? name;
@@ -8,6 +10,7 @@ class Food extends Equatable {
   final String? ingredients;
   final double? price;
   final double? rate;
+  final List<FoodType>? types;
 
   Food({
     this.id,
@@ -17,6 +20,7 @@ class Food extends Equatable {
     this.ingredients,
     this.price,
     this.rate,
+    this.types = const [],
   });
 
   @override
@@ -34,40 +38,35 @@ class Food extends Equatable {
 
 List<Food> mockFoods = [
   Food(
-    id: 1,
-    picturePath:
-        'https://i.pinimg.com/236x/5b/f2/7e/5bf27e721ed7bc858e0a7f0d905632e8.jpg',
-    name: 'Sate Sayur Sultan',
-    description:
-        'Sate Sayur Sultan adalah menu sate vegan paling terkenal di Jakarta. Sate ini dibuat dari berbagai macam bahan berkualitas terbaik dan langsung dibuat oleh chef handal. Sate ini sangat sehat dan bergizi.',
-    ingredients:
-        'Terong ungu, wortel, brokoli, kembang kol, jagung muda, tahu sutra, tempe, saus tiram, kecap asin, madu, merica, ketumbar bubuk, minyak wijen, tusuk sate.',
-    price: 150000,
-    rate: 4.2,
-  ),
+      id: 1,
+      picturePath:
+          'https://i.pinimg.com/236x/5b/f2/7e/5bf27e721ed7bc858e0a7f0d905632e8.jpg',
+      name: 'Sate Sayur Sultan',
+      description: 'Sate Sayur Sultan adalah menu sate vegan paling terkenal di Jakarta. Sate ini dibuat dari berbagai macam bahan berkualitas terbaik dan langsung dibuat oleh chef handal. Sate ini sangat sehat dan bergizi.',
+      ingredients: 'Terong ungu, wortel, brokoli, kembang kol, jagung muda, tahu sutra, tempe, saus tiram, kecap asin, madu, merica, ketumbar bubuk, minyak wijen, tusuk sate.',
+      price: 150000,
+      rate: 4.2,
+      types: [FoodType.new_food, FoodType.popular],),
   Food(
-    id: 2,
-    picturePath:
-        'https://i.pinimg.com/236x/e4/c8/ac/e4c8ac48c71738d0493b6e824f0094ed.jpg',
-    name: 'Nasi Goreng Kambing',
-    ingredients: 'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, dan kerupuk.',
-    description:
-        'Nasi Goreng Kambing spesial dengan bumbu rempah rahasia yang kaya akan cita rasa. Cocok untuk Anda yang menggemari makanan gurih dan pedas.',
-    price: 25000,
-    rate: 4.5,
-  ),
+      id: 2,
+      picturePath:
+          'https://i.pinimg.com/236x/e4/c8/ac/e4c8ac48c71738d0493b6e824f0094ed.jpg',
+      name: 'Nasi Goreng Kambing',
+      ingredients: 'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, dan kerupuk.',
+      description: 'Nasi Goreng Kambing spesial dengan bumbu rempah rahasia yang kaya akan cita rasa. Cocok untuk Anda yang menggemari makanan gurih dan pedas.',
+      price: 25000,
+      rate: 4.5,
+      types: [FoodType.recommended, FoodType.popular],),
   Food(
-    id: 3,
-    picturePath:
-        'https://i.pinimg.com/236x/1a/b7/ee/1ab7ee51c29e366c9c47311773c09dde.jpg',
-    name: 'Mie Ayam Jamur',
-    description:
-        'Mie Ayam Jamur dengan topping ayam yang empuk dan jamur yang segar, disajikan dengan kuah kaldu yang lezat.',
-    ingredients:
-        'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, kerupuk.',
-    price: 20000,
-    rate: 4.7,
-  ),
+      id: 3,
+      picturePath:
+          'https://i.pinimg.com/236x/1a/b7/ee/1ab7ee51c29e366c9c47311773c09dde.jpg',
+      name: 'Mie Ayam Jamur',
+      description: 'Mie Ayam Jamur dengan topping ayam yang empuk dan jamur yang segar, disajikan dengan kuah kaldu yang lezat.',
+      ingredients: 'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, kerupuk.',
+      price: 20000,
+      rate: 4.7,
+      types: [FoodType.new_food, FoodType.popular],),
   Food(
     id: 4,
     picturePath:
@@ -79,6 +78,7 @@ List<Food> mockFoods = [
         'Daging sapi giling, tepung tapioka, bawang putih, merica, garam, es batu, telur, daging ayam cincang (untuk isian), telur puyuh, cabai rawit, bawang goreng, daun bawang, kaldu sapi, air, dan minyak goreng.',
     price: 30000,
     rate: 4.3,
+      types: [FoodType.new_food, FoodType.popular, FoodType.recommended],
   ),
   Food(
     id: 5,
@@ -91,6 +91,7 @@ List<Food> mockFoods = [
         'Ayam kampung, cabai merah keriting, cabai rawit, bawang merah, bawang putih, terasi bakar, gula merah, garam, air asam jawa, minyak goreng, daun jeruk, dan jeruk limau.',
     price: 50000,
     rate: 4.8,
+    types: [FoodType.new_food],
   ),
   Food(
     id: 6,
@@ -103,6 +104,7 @@ List<Food> mockFoods = [
         'Tahu, tempe, lontong, kangkung, bayam, kacang panjang, tauge, mentimun, telur rebus, saus kacang, kerupuk.',
     price: 20000,
     rate: 4.6,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 7,
@@ -114,6 +116,7 @@ List<Food> mockFoods = [
     ingredients: 'Cendol, santan, gula merah, durian, es batu.',
     price: 25000,
     rate: 4.4,
+    types: [FoodType.new_food, FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 8,
@@ -126,6 +129,7 @@ List<Food> mockFoods = [
         'Daging sapi, santan, serai, daun jeruk, lengkuas, bawang merah, bawang putih, cabai merah, kunyit, ketumbar.',
     price: 70000,
     rate: 4.9,
+    types: [FoodType.new_food, FoodType.popular],
   ),
   Food(
     id: 9,
@@ -138,6 +142,7 @@ List<Food> mockFoods = [
         'Ikan tenggiri, tepung sagu, telur, bawang putih, cuka, cabai, gula merah, asam jawa.',
     price: 35000,
     rate: 4.1,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 10,
@@ -150,6 +155,7 @@ List<Food> mockFoods = [
         'Tepung terigu, telur, gula, susu kental manis, keju, mentega.',
     price: 45000,
     rate: 4.5,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 11,
@@ -162,6 +168,7 @@ List<Food> mockFoods = [
         'Daging sapi, jeroan, santan, kentang, tomat, daun jeruk, bawang merah, bawang putih, jahe, cengkeh.',
     price: 40000,
     rate: 4.3,
+    types: [FoodType.new_food, FoodType.popular],
   ),
   Food(
     id: 12,
@@ -174,6 +181,7 @@ List<Food> mockFoods = [
         'Beras, ayam, cakwe, kacang kedelai goreng, kaldu ayam, daun bawang, bawang goreng.',
     price: 15000,
     rate: 4.6,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 13,
@@ -186,6 +194,7 @@ List<Food> mockFoods = [
         'Daging sapi, lidah sapi, tepung beras, bawang merah, bawang putih, serai, kunyit, jahe, ketumbar, lengkuas.',
     price: 30000,
     rate: 4.7,
+    types: [FoodType.new_food, FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 14,
@@ -198,6 +207,7 @@ List<Food> mockFoods = [
         'Kwetiau, udang, cumi, bakso ikan, bawang putih, kecap manis, kecap asin, telur, daun bawang.',
     price: 45000,
     rate: 4.4,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 15,
@@ -210,6 +220,7 @@ List<Food> mockFoods = [
         'Nangka muda, telur, ayam, krecek, santan, gula jawa, daun salam, lengkuas, bawang merah, bawang putih.',
     price: 30000,
     rate: 4.8,
+    types: [FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 16,
@@ -222,6 +233,7 @@ List<Food> mockFoods = [
         'Buntut sapi, wortel, kentang, bawang putih, bawang merah, kayu manis, cengkeh, daun bawang, seledri.',
     price: 65000,
     rate: 4.7,
+    types: [FoodType.new_food, FoodType.recommended, FoodType.popular],
   ),
   Food(
     id: 17,
@@ -234,5 +246,6 @@ List<Food> mockFoods = [
         'Ayam, tepung beras, tepung tapioka, bawang putih, ketumbar, kunyit, garam, merica, sambal, lalapan.',
     price: 35000,
     rate: 4.5,
+    types: [FoodType.recommended, FoodType.popular],
   ),
 ];

@@ -9,6 +9,7 @@ class User extends Equatable {
   final String? phoneNumber;
   final String? city;
   final String? picturePath;
+  static String? token;
 
   User({
     this.id,
@@ -22,22 +23,39 @@ class User extends Equatable {
   });
 
   User copyWith({
-    required int id,
-    required String name,
-    required String email,
-    required String address,
-    required String houseNumber,
-    required String phoneNumber,
-    required String city,
-    required String picturePath,
+    int? id,
+    String? name,
+    String? email,
+    String? address,
+    String? houseNumber,
+    String? phoneNumber,
+    String? city,
+    String? picturePath,
   }) {
     return User(
-      id :id ?? this.id,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      address: address ?? this.address,
+      houseNumber: houseNumber ?? this.houseNumber,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      city: city ?? this.city,
+      picturePath: picturePath ?? this.picturePath,
     );
   }
 
+  factory User.fromJson(Map<String, dynamic> data) => User(
+        id: data['id'],
+        name: data['name'],
+        email: data['email'],
+        address: data['address'],
+        houseNumber: data['houseNumber'],
+        phoneNumber: data['phoneNumber'],
+        city: data['city'],
+        picturePath: data['profile_photo_url'],
+      );
+
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         name,
@@ -58,5 +76,6 @@ User mockUser = User(
   houseNumber: 'A2',
   phoneNumber: '081234567891',
   city: 'Bandung',
-  picturePath: 'https://i.pinimg.com/736x/03/9e/f1/039ef1bc79b85a19f2764eba07426674.jpg',
+  picturePath:
+      'https://i.pinimg.com/736x/03/9e/f1/039ef1bc79b85a19f2764eba07426674.jpg',
 );
