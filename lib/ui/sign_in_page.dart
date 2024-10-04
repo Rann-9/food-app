@@ -97,59 +97,59 @@ class _SignInPageState extends State<SignInPage> {
               child: isLoading
                   ? loadingIndicator
                   : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await context.read<UserCubit>().signIn(
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  UserState state = context.read<UserCubit>().state;
+
+                  if (state is UserLoaded) {
+                    context.read<FoodCubit>().getFoods();
+                    context.read<TransactionCubit>().getTransactions();
+                    Get.to(() => MainPage());
+                  } else {
+                    Get.snackbar(
+                      '',
+                      '',
+                      backgroundColor: 'D9435E'.toColor(),
+                      icon: Icon(
+                        MdiIcons.closeCircleOutline,
+                        color: Colors.white,
+                      ),
+                      titleText: Text(
+                        'Sign In Failed',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await context.read<UserCubit>().signIn(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                        UserState state = context.read<UserCubit>().state;
-
-                        if (state is UserLoaded) {
-                          context.read<FoodCubit>().getFoods();
-                          context.read<TransactionCubit>().getTransactions();
-                          Get.to(() => MainPage());
-                        } else {
-                          Get.snackbar(
-                            '',
-                            '',
-                            backgroundColor: 'D9435E'.toColor(),
-                            icon: Icon(
-                              MdiIcons.closeCircleOutline,
-                              color: Colors.white,
-                            ),
-                            titleText: Text(
-                              'Sign In Failed',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            messageText: Text(
-                              'Please try again later',
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                          setState(() {
-                            isLoading = false;
-                          });
-                        }
-                      },
-                      child: Text(
-                        'Login',
-                        style: blackFontStyle3.copyWith(color: Colors.white),
+                      messageText: Text(
+                        'Please try again later',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                    );
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                },
+                child: Text(
+                  'Login',
+                  style: blackFontStyle3.copyWith(color: Colors.white),
+                ),
+              ),
             ),
             Container(
               width: double.infinity,

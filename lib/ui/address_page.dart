@@ -1,7 +1,15 @@
 part of 'pages.dart';
 
 class AddressPage extends StatefulWidget {
-  const AddressPage({super.key});
+  const AddressPage(
+      {super.key,
+        required this.user,
+        required this.password,
+        required this.pictureFile});
+
+  final User user;
+  final String password;
+  final File pictureFile;
 
   @override
   State<AddressPage> createState() => _AddressPageState();
@@ -12,10 +20,21 @@ class _AddressPageState extends State<AddressPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController houseNumberController = TextEditingController();
 
+  bool isLoading = false;
+  List<String>? cities;
+  String? selectedCity;
+
+  @override
+  void initState() {
+    cities = ['Jakarta', 'Bandung', 'Semarang', 'Jogja', 'Surabaya'];
+    selectedCity = cities![0];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GeneralPage(
-      title: 'Address',
+      title: 'Profile',
       subtitle: 'Make sure it valid',
       onBackButtonPressed: () {
         Get.back();
@@ -166,65 +185,20 @@ class _AddressPageState extends State<AddressPage> {
               ),
             ),
             child: DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  child: Text('Bandung'),
-                  value: 'Bandung',
+              value: selectedCity,
+              items: cities!
+                  .map(
+                    (e) => DropdownMenuItem(
+                  child: Text(e),
+                  value: e,
                 ),
-                DropdownMenuItem(
-                  child: Text('Bekasi'),
-                  value: 'Bekasi',
-                ),
-                DropdownMenuItem(
-                  child: Text('Tasikmalaya'),
-                  value: 'Tasikmalaya',
-                ),
-                DropdownMenuItem(
-                  child: Text('Bogor'),
-                  value: 'Bogor',
-                ),
-                DropdownMenuItem(
-                  child: Text('Jakarta'),
-                  value: 'Jakarta',
-                ),
-                DropdownMenuItem(
-                  child: Text('Medan'),
-                  value: 'Medan',
-                ),
-                DropdownMenuItem(
-                  child: Text('Semarang'),
-                  value: 'Semarang',
-                ),
-                DropdownMenuItem(
-                  child: Text('Jogja'),
-                  value: 'Jogja',
-                ),
-                DropdownMenuItem(
-                  child: Text('Surabaya'),
-                  value: 'Surabaya',
-                ),
-                DropdownMenuItem(
-                  child: Text('Palembang'),
-                  value: 'Palembang',
-                ),
-                DropdownMenuItem(
-                  child: Text('Aceh'),
-                  value: 'Aceh',
-                ),
-                DropdownMenuItem(
-                  child: Text('Malang'),
-                  value: 'Malang',
-                ),
-                DropdownMenuItem(
-                  child: Text('Ciamis'),
-                  value: 'Ciamis',
-                ),
-                DropdownMenuItem(
-                  child: Text('Cikarang'),
-                  value: 'Cikarang',
-                ),
-              ],
-              onChanged: (item) {},
+              )
+                  .toList(),
+              onChanged: (item) {
+                setState(() {
+                  selectedCity = item;
+                });
+              },
               isExpanded: true,
               underline: SizedBox(),
             ),
@@ -235,14 +209,63 @@ class _AddressPageState extends State<AddressPage> {
             height: 45,
             margin: EdgeInsets.only(top: 24),
             padding: EdgeInsets.symmetric(horizontal: 15),
-            child: ElevatedButton(
+            child: (isLoading == true)
+                ? loadingIndicator
+                : ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: mainColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                User user = widget.user.copyWith(
+                    address: addressController.text,
+                    phoneNumber: phoneNumberController.text,
+                    houseNumber: houseNumberController.text,
+                    city: selectedCity);
+
+                setState(() {
+                  isLoading = true;
+                });
+
+                await context.read<UserCubit>().signUp(
+                    user, widget.password,
+                    pictureFile: widget.pictureFile);
+                UserState state = context.read<UserCubit>().state;
+
+                if (state is UserLoaded) {
+                  context.read<FoodCubit>().getFoods();
+                  context.read<TransactionCubit>().getTransactions();
+                  Get.to(() => MainPage());
+                } else {
+                  Get.snackbar(
+                    '',
+                    '',
+                    backgroundColor: 'D9435E'.toColor(),
+                    icon: Icon(
+                      MdiIcons.closeCircleOutline,
+                      color: Colors.white,
+                    ),
+                    titleText: Text(
+                      'Sign In Failed',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    messageText: Text(
+                      'Please try again later',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
+              },
               child: Text(
                 'Create Account',
                 style: blackFontStyle3.copyWith(color: Colors.white),

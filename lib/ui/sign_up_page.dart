@@ -8,6 +8,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  User? user;
+  File? pictureFile;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -19,31 +21,54 @@ class _SignUpPageState extends State<SignUpPage> {
       body: GeneralPage(
         title: 'Sign Up',
         subtitle: 'Create your account',
-        onBackButtonPressed: (){
+        onBackButtonPressed: () {
           Get.back();
         },
         child: Column(
           children: [
-            Container(
-              width: 110,
-              height: 110,
-              margin: EdgeInsets.only(top: 26),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/photo_border.png',
-                  ),
-                ),
-              ),
+            GestureDetector(
+              onTap: () async {
+                XFile? pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
+
+                if (pickedFile != null) {
+                  pictureFile = File(pickedFile.path);
+                  setState(() {});
+                }
+              },
               child: Container(
+                width: 110,
+                height: 110,
+                margin: EdgeInsets.only(top: 26),
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage('https://ui-avatars.com/api/?name=J+N'),
-                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      'assets/images/photo_border.png',
+                    ),
                   ),
                 ),
+                child: (pictureFile != null)
+                    ? Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: FileImage(pictureFile!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                'https://ui-avatars.com/api/?name=J+N'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
               ),
             ),
             Container(
@@ -161,7 +186,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(() => AddressPage());
+                  Get.to(
+                    () => AddressPage(
+                      user: User(
+                        name: nameController.text,
+                        email: emailController.text,
+                      ),
+                      password: passwordController.text,
+                      pictureFile: pictureFile!,
+                    ),
+                  );
                 },
                 child: Text(
                   'Continue',
