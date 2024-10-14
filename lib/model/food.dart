@@ -23,6 +23,28 @@ class Food extends Equatable {
     this.types = const [],
   });
 
+  factory Food.fromJson(Map<String, dynamic> data) => Food(
+        id: data['id'],
+        name: data['name'],
+        picturePath: data['picturePath'],
+        description: data['description'],
+        ingredients: data['ingredients'],
+        price: data['price'].toDouble(),
+        rate: data['rate'].toDouble(),
+        types: data['types'].toString().split(',').map((e) {
+          switch (e) {
+            case 'new_food':
+              return FoodType.new_food;
+            case 'popular':
+              return FoodType.popular;
+            case 'recommended':
+              return FoodType.recommended;
+            default:
+              return FoodType.new_food;
+          }
+        }).toList(),
+      );
+
   @override
   // TODO: implement props
   List<Object?> get props => [
@@ -38,35 +60,44 @@ class Food extends Equatable {
 
 List<Food> mockFoods = [
   Food(
-      id: 1,
-      picturePath:
-          'https://i.pinimg.com/236x/5b/f2/7e/5bf27e721ed7bc858e0a7f0d905632e8.jpg',
-      name: 'Sate Sayur Sultan',
-      description: 'Sate Sayur Sultan adalah menu sate vegan paling terkenal di Jakarta. Sate ini dibuat dari berbagai macam bahan berkualitas terbaik dan langsung dibuat oleh chef handal. Sate ini sangat sehat dan bergizi.',
-      ingredients: 'Terong ungu, wortel, brokoli, kembang kol, jagung muda, tahu sutra, tempe, saus tiram, kecap asin, madu, merica, ketumbar bubuk, minyak wijen, tusuk sate.',
-      price: 150000,
-      rate: 4.2,
-      types: [FoodType.new_food, FoodType.popular],),
+    id: 1,
+    picturePath:
+        'https://i.pinimg.com/236x/5b/f2/7e/5bf27e721ed7bc858e0a7f0d905632e8.jpg',
+    name: 'Sate Sayur Sultan',
+    description:
+        'Sate Sayur Sultan adalah menu sate vegan paling terkenal di Jakarta. Sate ini dibuat dari berbagai macam bahan berkualitas terbaik dan langsung dibuat oleh chef handal. Sate ini sangat sehat dan bergizi.',
+    ingredients:
+        'Terong ungu, wortel, brokoli, kembang kol, jagung muda, tahu sutra, tempe, saus tiram, kecap asin, madu, merica, ketumbar bubuk, minyak wijen, tusuk sate.',
+    price: 150000,
+    rate: 4.2,
+    types: [FoodType.new_food, FoodType.popular],
+  ),
   Food(
-      id: 2,
-      picturePath:
-          'https://i.pinimg.com/236x/e4/c8/ac/e4c8ac48c71738d0493b6e824f0094ed.jpg',
-      name: 'Nasi Goreng Kambing',
-      ingredients: 'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, dan kerupuk.',
-      description: 'Nasi Goreng Kambing spesial dengan bumbu rempah rahasia yang kaya akan cita rasa. Cocok untuk Anda yang menggemari makanan gurih dan pedas.',
-      price: 25000,
-      rate: 4.5,
-      types: [FoodType.recommended, FoodType.popular],),
+    id: 2,
+    picturePath:
+        'https://i.pinimg.com/236x/e4/c8/ac/e4c8ac48c71738d0493b6e824f0094ed.jpg',
+    name: 'Nasi Goreng Kambing',
+    ingredients:
+        'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, dan kerupuk.',
+    description:
+        'Nasi Goreng Kambing spesial dengan bumbu rempah rahasia yang kaya akan cita rasa. Cocok untuk Anda yang menggemari makanan gurih dan pedas.',
+    price: 25000,
+    rate: 4.5,
+    types: [FoodType.recommended, FoodType.popular],
+  ),
   Food(
-      id: 3,
-      picturePath:
-          'https://i.pinimg.com/236x/1a/b7/ee/1ab7ee51c29e366c9c47311773c09dde.jpg',
-      name: 'Mie Ayam Jamur',
-      description: 'Mie Ayam Jamur dengan topping ayam yang empuk dan jamur yang segar, disajikan dengan kuah kaldu yang lezat.',
-      ingredients: 'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, kerupuk.',
-      price: 20000,
-      rate: 4.7,
-      types: [FoodType.new_food, FoodType.popular],),
+    id: 3,
+    picturePath:
+        'https://i.pinimg.com/236x/1a/b7/ee/1ab7ee51c29e366c9c47311773c09dde.jpg',
+    name: 'Mie Ayam Jamur',
+    description:
+        'Mie Ayam Jamur dengan topping ayam yang empuk dan jamur yang segar, disajikan dengan kuah kaldu yang lezat.',
+    ingredients:
+        'Nasi putih, daging kambing, bawang merah, bawang putih, cabai merah, kecap manis, kecap asin, saus tiram, daun bawang, minyak, garam, merica, telur, tomat, acar, kerupuk.',
+    price: 20000,
+    rate: 4.7,
+    types: [FoodType.new_food, FoodType.popular],
+  ),
   Food(
     id: 4,
     picturePath:
@@ -78,7 +109,7 @@ List<Food> mockFoods = [
         'Daging sapi giling, tepung tapioka, bawang putih, merica, garam, es batu, telur, daging ayam cincang (untuk isian), telur puyuh, cabai rawit, bawang goreng, daun bawang, kaldu sapi, air, dan minyak goreng.',
     price: 30000,
     rate: 4.3,
-      types: [FoodType.new_food, FoodType.popular, FoodType.recommended],
+    types: [FoodType.new_food, FoodType.popular, FoodType.recommended],
   ),
   Food(
     id: 5,

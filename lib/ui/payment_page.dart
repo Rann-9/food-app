@@ -10,7 +10,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-
   bool isLoading = false;
 
   @override
@@ -52,7 +51,8 @@ class _PaymentPageState extends State<PaymentPage> {
                           12,
                         ),
                         image: DecorationImage(
-                          image: NetworkImage(widget.transaction!.food!.picturePath!),
+                          image: NetworkImage(
+                              widget.transaction!.food!.picturePath!),
                         ),
                       ),
                     ),
@@ -64,7 +64,8 @@ class _PaymentPageState extends State<PaymentPage> {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 189,
-                          child: Text(widget.transaction?.food?.name ?? 'No Name',
+                          child: Text(
+                            widget.transaction?.food?.name ?? 'No Name',
                             style: blackFontStyle2,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -83,7 +84,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                     Expanded(
                       child: Text(
-                        '${widget.transaction?.quantitiy} item(s)',
+                        '${widget.transaction?.quantity} item(s)',
                         textAlign: TextAlign.end,
                         style: greyFontStyle.copyWith(
                           fontSize: 13,
@@ -137,7 +138,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       style: blackFontStyle3,
                     ),
                     Spacer(),
-                    Text('${widget.transaction!.quantitiy.toString()} Item(s)'),
+                    Text('${widget.transaction!.quantity.toString()} Item(s)'),
                   ],
                 ),
                 SizedBox(
@@ -151,12 +152,16 @@ class _PaymentPageState extends State<PaymentPage> {
                       style: blackFontStyle3,
                     ),
                     Spacer(),
-                    Text(NumberFormat.currency(
-                      symbol: 'IDR ',
-                      decimalDigits: 0,
-                      locale: 'id_ID',
-                    ).format(
-                        widget.transaction?.food?.price ?? 0 * widget.transaction!.quantitiy!)),
+                    Text(
+                      NumberFormat.currency(
+                        symbol: 'IDR ',
+                        decimalDigits: 0,
+                        locale: 'id_ID',
+                      ).format(
+                        widget.transaction!.food!.price! *
+                            widget.transaction!.quantity!,
+                      ),
+                    ),
                   ],
                 ),
                 Divider(
@@ -178,8 +183,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         symbol: 'IDR ',
                         decimalDigits: 0,
                         locale: 'id_ID',
-                      ).format(widget.transaction?.food?.price ?? 0 *
-                          widget.transaction!.quantitiy! *
+                      ).format(widget.transaction!.food!.price! *
+                          widget.transaction!.quantity! *
                           0.1),
                     ),
                   ],
@@ -199,7 +204,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         symbol: 'IDR ',
                         decimalDigits: 0,
                         locale: 'id_ID',
-                      ).format(widget.transaction?.total ?? 0),
+                      ).format(50000),
                     ),
                   ],
                 ),
@@ -222,7 +227,13 @@ class _PaymentPageState extends State<PaymentPage> {
                         symbol: 'IDR ',
                         decimalDigits: 0,
                         locale: 'id_ID',
-                      ).format(widget.transaction!.total),
+                      ).format(
+                        widget.transaction!.total! +
+                            (widget.transaction!.food!.price! *
+                                widget.transaction!.quantity! *
+                                0.1) +
+                            50000,
+                      ),
                     ),
                   ],
                 ),
@@ -346,14 +357,15 @@ class _PaymentPageState extends State<PaymentPage> {
                         isLoading = true;
                       });
 
-                      bool result = await context.read<TransactionCubit>().submitTransaction(
-                        widget.transaction!.copyWith(
+                      var paymentURL = await context
+                          .read<TransactionCubit>()
+                          .submitTransaction(widget.transaction!.copyWith(
                             dateTime: DateTime.now(),
-                            total: (widget.transaction!.total! * 1.1).toInt() + 50000,
-                        )
-                      );
-                      if(result){
-                        Get.to(SuccessOrderPage());
+                            total: (widget.transaction!.total! * 1.1).toInt() +
+                                50000,
+                          ));
+                      if (paymentURL != null) {
+                        Get.to(PaymentMethodPage(paymentURL: paymentURL));
                       } else {
                         Get.snackbar(
                           '',

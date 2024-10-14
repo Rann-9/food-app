@@ -41,12 +41,12 @@ class OrderListItem extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "${transaction.quantitiy.toString()} item(s) ~ ",
+                    "${transaction.quantity.toString()} item(s) ~ ",
                     style: greyFontStyle,
                   ),
                   Text(
                     NumberFormat.currency(
-                        symbol: 'IDR ', decimalDigits: 0, locale: 'id-ID')
+                            symbol: 'IDR ', decimalDigits: 0, locale: 'id-ID')
                         .format(transaction.total),
                     style: greyFontStyle,
                   ),
@@ -65,23 +65,24 @@ class OrderListItem extends StatelessWidget {
             ),
             (transaction.status == TransactionStatus.delivered)
                 ? Text(
-              "Delivered",
-              style: blackFontStyle2.copyWith(color: Colors.green),
-            )
+                    "Delivered",
+                    style: blackFontStyle2.copyWith(color: Colors.green),
+                  )
                 : (transaction.status == TransactionStatus.on_delivery)
-                ? Text(
-              "On Delivery",
-              style: blackFontStyle2.copyWith(color: Colors.blue),
-            )
-                : (transaction.status == TransactionStatus.canceled)
-                ? Text(
-              "Canceled",
-              style: blackFontStyle2.copyWith(color: Colors.red),
-            )
-                : Text(
-              "Pending",
-              style: blackFontStyle2.copyWith(color: Colors.yellow),
-            ),
+                    ? Text(
+                        "On Delivery",
+                        style: blackFontStyle2.copyWith(color: Colors.blue),
+                      )
+                    : (transaction.status == TransactionStatus.canceled)
+                        ? Text(
+                            "Canceled",
+                            style: blackFontStyle2.copyWith(color: Colors.red),
+                          )
+                        : Text(
+                            "Pending",
+                            style:
+                                blackFontStyle2.copyWith(color: Colors.yellow),
+                          ),
           ],
         ),
       ],

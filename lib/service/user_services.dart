@@ -10,9 +10,7 @@ class UserServices {
     String url = baseURL + '/login';
 
     var response = await client.post(Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: ApiServices.headersPost(),
         body: jsonEncode(<String, String>{
           'email': email,
           'password': password,
@@ -48,9 +46,7 @@ class UserServices {
 
     var response = await http.post(
       Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: ApiServices.headersPost(),
       body: jsonEncode(
         <String, String>{
           'name': user.name!,
@@ -99,7 +95,7 @@ class UserServices {
     }
 
     var multiPartFile =
-    await http.MultipartFile.fromPath('file', pictureFile.path);
+        await http.MultipartFile.fromPath('file', pictureFile.path);
 
     request.files.add(multiPartFile);
 
@@ -116,5 +112,25 @@ class UserServices {
     } else {
       return ApiReturnValue(message: 'Upload picture failed, please try again');
     }
+  }
+
+  static Future<ApiReturnValue<bool>> logout({http.Client? client}) async {
+    client ??= http.Client();
+
+    String url = '$baseURL/logout';
+    print('Url Logout : $url');
+
+    var response = await client.post(
+      Uri.parse(url),
+      headers: ApiServices.headersPost(token: User.token),
+    );
+
+    print('Response Logout : ${response.body}');
+
+    if(response.statusCode != 200) {
+      return ApiReturnValue(message: 'Logout Failed');
+    }
+
+    return ApiReturnValue(value: true);
   }
 }

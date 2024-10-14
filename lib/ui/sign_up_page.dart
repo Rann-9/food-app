@@ -63,8 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: NetworkImage(
-                                'https://ui-avatars.com/api/?name=J+N'),
+                            image: AssetImage('assets/images/photo.png'),
                             fit: BoxFit.cover,
                           ),
                         ),

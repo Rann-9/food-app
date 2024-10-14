@@ -247,7 +247,7 @@ class _DetailPageState extends State<DetailPage> {
                           onPressed: () {
                             Get.to(
                               PaymentPage(
-                                transaction: widget.transaction!.copyWith(quantitiy: quantity,
+                                transaction: widget.transaction!.copyWith(quantity: quantity,
                                   total: quantity * (widget.transaction!.food!.price!.toInt())
                                 ),
                               ),

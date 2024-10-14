@@ -11,6 +11,16 @@ class _FoodPageState extends State<FoodPage> {
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    context.read<FoodCubit>().getFoods();
+    super.initState();
+  }
+
+  void onRefresh() {
+    context.read<FoodCubit>().getFoods();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double listItemWidth =
         MediaQuery.of(context).size.width - 2 * defaultMargin;
@@ -71,12 +81,12 @@ class _FoodPageState extends State<FoodPage> {
             builder: (_, state) => (state is FoodLoaded)
                 ? ListView(
               scrollDirection: Axis.horizontal,
-              children: mockFoods
+              children: state.foods
                   .map(
                     (food) => Padding(
                   padding: EdgeInsets.only(
                     left:
-                    (food == mockFoods.first) ? defaultMargin : 0,
+                    (food == state.foods.first) ? defaultMargin : 0,
                     right: defaultMargin,
                   ),
                   child: GestureDetector(
@@ -92,7 +102,9 @@ class _FoodPageState extends State<FoodPage> {
                               as UserLoaded)
                                   .user),
                         ),
-                      );
+                      )!.then((value) {
+                        onRefresh();
+                      });
                     },
                     child: FoodCard(
                       food: food,
