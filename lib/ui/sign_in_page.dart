@@ -14,166 +14,191 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GeneralPage(
-        title: 'Sign In',
-        subtitle: 'Find your best ever meal',
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(
-                defaultMargin,
-                10,
-                defaultMargin,
-                6,
-              ),
-              child: Text(
-                'Email Address',
-                style: blackFontStyle2,
+    return GeneralPage(
+      title: "Sign In",
+      subtitle: "Find your best ever meal",
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(
+              defaultMargin,
+              26,
+              defaultMargin,
+              6,
+            ),
+            child: Text(
+              "Email Address",
+              style: blackFontStyle2,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: defaultMargin),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: mainColor,
               ),
             ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black,
-                ),
+            child: TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                hintText: "Type Your Email Address",
+                hintStyle: greyFontStyle,
+                border: InputBorder.none,
               ),
-              child: TextField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: greyFontStyle,
-                  hintText: 'Type your email address',
-                ),
+              style: blackFontStyle3,
+              cursorColor: mainColor,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(
+              defaultMargin,
+              10,
+              defaultMargin,
+              6,
+            ),
+            child: Text(
+              "Password",
+              style: blackFontStyle2,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: defaultMargin),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: mainColor,
               ),
             ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.fromLTRB(
-                defaultMargin,
-                10,
-                defaultMargin,
-                6,
+            child: TextField(
+              controller: passwordController,
+              obscureText: true,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: InputDecoration(
+                hintText: "Type Your Password",
+                hintStyle: greyFontStyle,
+                border: InputBorder.none,
               ),
-              child: Text(
-                'Password',
-                style: blackFontStyle2,
-              ),
+              style: blackFontStyle3,
+              cursorColor: mainColor,
             ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black,
-                ),
-              ),
-              child: TextField(
-                controller: passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: greyFontStyle,
-                  hintText: 'Type your password',
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              height: 45,
-              margin: EdgeInsets.only(top: 24),
-              padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-              child: isLoading
-                  ? loadingIndicator
-                  : ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: mainColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => const SignUpPage());
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                  child: Text(
+                    "Create an Account",
+                    style: blackFontStyle3.copyWith(
+                      color: greyColor,
+                      decoration: TextDecoration.underline,
+                      decorationColor: greyColor,
+                      decorationThickness: 2,
+                    ),
                   ),
                 ),
-                onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await context.read<UserCubit>().signIn(
-                    emailController.text,
-                    passwordController.text,
-                  );
-                  UserState state = context.read<UserCubit>().state;
+                Container(
+                  padding: const EdgeInsets.only(right: defaultMargin),
+                  child: isLoading
+                      ? loadingIndicator
+                      : ElevatedButton(
+                    onPressed: () async {
+                      if (emailController.text == "" ||
+                          passwordController.text == "") {
+                        Get.snackbar(
+                          "",
+                          "",
+                          backgroundColor: "D9435E".toColor(),
+                          icon: Icon(
+                            MdiIcons.closeCircleOutline,
+                            color: Colors.white,
+                          ),
+                          titleText: Text(
+                            "Sign In Failed",
+                            style: blackFontStyle3,
+                          ),
+                          messageText: Text(
+                            "Please fill all the fields",
+                            style: blackFontStyle3,
+                          ),
+                        );
+                      } else {
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                  if (state is UserLoaded) {
-                    context.read<FoodCubit>().getFoods();
-                    context.read<TransactionCubit>().getTransactions();
-                    Get.to(() => MainPage());
-                  } else {
-                    Get.snackbar(
-                      '',
-                      '',
-                      backgroundColor: 'D9435E'.toColor(),
-                      icon: Icon(
-                        MdiIcons.closeCircleOutline,
-                        color: Colors.white,
+                        await context.read<UserCubit>().signIn(
+                          emailController.text,
+                          passwordController.text,
+                        );
+                        UserState state = context.read<UserCubit>().state;
+
+                        if (state is UserLoaded) {
+                          context.read<FoodCubit>().getFoods();
+                          context
+                              .read<TransactionCubit>()
+                              .getTransactions();
+
+                          Get.to(() => MainPage());
+                        } else {
+                          Get.snackbar(
+                            "",
+                            "",
+                            backgroundColor: "D9435E".toColor(),
+                            icon: Icon(
+                              MdiIcons.closeCircleOutline,
+                              color: mainColor,
+                            ),
+                            titleText: Text(
+                              "Sign In Failed",
+                              style: blackFontStyle3,
+                            ),
+                            messageText: Text(
+                              "Please try again later",
+                              style: blackFontStyle3,
+                            ),
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      titleText: Text(
-                        'Sign In Failed',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      messageText: Text(
-                        'Please try again later',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                        ),
-                      ),
-                    );
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-                },
-                child: Text(
-                  'Login',
-                  style: blackFontStyle3.copyWith(color: Colors.white),
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              height: 45,
-              margin: EdgeInsets.only(top: 12),
-              padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-              child: ElevatedButton(
-                onPressed: () {
-                  Get.to(() => SignUpPage());
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: greyColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      "Sign In",
+                      style: blackFontStyle3,
+                    ),
                   ),
                 ),
-                child: Text(
-                  'Create Account',
-                  style: blackFontStyle3.copyWith(color: Colors.white),
-                ),
-              ),
-            )
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

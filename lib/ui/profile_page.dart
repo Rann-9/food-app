@@ -36,23 +36,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: double.infinity,
                   height: double.infinity,
                   margin: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: NetworkImage(
-                            'https://i.pinimg.com/736x/c8/4b/1b/c84b1bc7fb9fe438e9ac111af9db1b94.jpg'),
-                        fit: BoxFit.cover),
+                      image: NetworkImage(
+                        (context.read<UserCubit>().state as UserLoaded)
+                                .user
+                                .picturePath ??
+                            'Gambar Kosong',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
               Text(
-                mockUser.name ?? "name",
+                (context.read<UserCubit>().state as UserLoaded).user.name ?? '',
                 style: blackFontStyle1.copyWith(
                   color: Colors.black,
                 ),
               ),
               Text(
-                mockUser.email ?? "email",
+                (context.read<UserCubit>().state as UserLoaded).user.email ??
+                    '',
                 style: blackFontStyle2.copyWith(),
               ),
             ],
@@ -92,17 +98,20 @@ class AccountTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        RowTab(title: 'Edit Profile'),
+        GestureDetector(
+            onTap: () async {
+              Get.to(() => EditProfilePage());
+            },
+            child: RowTab(title: 'Edit Profile')),
         RowTab(title: 'Home Address'),
         RowTab(title: 'Security'),
         RowTab(title: 'Payments'),
-        ElevatedButton(
-          onPressed: () {
-            context.read<UserCubit>().signOut();
-            Get.to(SignInPage());
-          },
-          child: RowTab(title: 'Sign Out'),
-        ),
+        GestureDetector(
+            onTap: () async {
+              context.read<UserCubit>().signOut();
+              Get.to(SignInPage());
+            },
+            child: RowTab(title: 'Sign Out')),
       ],
     );
   }
