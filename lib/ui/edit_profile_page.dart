@@ -17,6 +17,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isLoading = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
