@@ -8,7 +8,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController houseNumberController = TextEditingController();
@@ -18,7 +17,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    nameController.text =
+        (context.read<UserCubit>().state as UserLoaded).user.name!;
+    phoneNumberController.text =
+        (context.read<UserCubit>().state as UserLoaded).user.phoneNumber!;
+    houseNumberController.text =
+        (context.read<UserCubit>().state as UserLoaded).user.houseNumber!;
+    addressController.text =
+        (context.read<UserCubit>().state as UserLoaded).user.address!;
+    cityController.text =
+        (context.read<UserCubit>().state as UserLoaded).user.city!;
     super.initState();
   }
 
