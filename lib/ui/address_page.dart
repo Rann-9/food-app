@@ -3,9 +3,9 @@ part of 'pages.dart';
 class AddressPage extends StatefulWidget {
   const AddressPage(
       {super.key,
-        required this.user,
-        required this.password,
-        required this.pictureFile});
+      required this.user,
+      required this.password,
+      required this.pictureFile});
 
   final User user;
   final String password;
@@ -189,10 +189,10 @@ class _AddressPageState extends State<AddressPage> {
               items: cities!
                   .map(
                     (e) => DropdownMenuItem(
-                  child: Text(e),
-                  value: e,
-                ),
-              )
+                      child: Text(e),
+                      value: e,
+                    ),
+                  )
                   .toList(),
               onChanged: (item) {
                 setState(() {
@@ -212,65 +212,65 @@ class _AddressPageState extends State<AddressPage> {
             child: (isLoading == true)
                 ? loadingIndicator
                 : ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: mainColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () async {
-                User user = widget.user.copyWith(
-                    address: addressController.text,
-                    phoneNumber: phoneNumberController.text,
-                    houseNumber: houseNumberController.text,
-                    city: selectedCity);
-
-                setState(() {
-                  isLoading = true;
-                });
-
-                await context.read<UserCubit>().signUp(
-                    user, widget.password,
-                    pictureFile: widget.pictureFile);
-                UserState state = context.read<UserCubit>().state;
-
-                if (state is UserLoaded) {
-                  context.read<FoodCubit>().getFoods();
-                  context.read<TransactionCubit>().getTransactions();
-                  Get.to(() => MainPage());
-                } else {
-                  Get.snackbar(
-                    '',
-                    '',
-                    backgroundColor: 'D9435E'.toColor(),
-                    icon: Icon(
-                      MdiIcons.closeCircleOutline,
-                      color: Colors.white,
-                    ),
-                    titleText: Text(
-                      'Sign In Failed',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    messageText: Text(
-                      'Please try again later',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                      ),
+                    onPressed: () async {
+                      User user = widget.user.copyWith(
+                          address: addressController.text,
+                          phoneNumber: phoneNumberController.text,
+                          houseNumber: houseNumberController.text,
+                          city: selectedCity);
+
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      await context.read<UserCubit>().signUp(
+                          user, widget.password,
+                          pictureFile: widget.pictureFile);
+                      UserState state = context.read<UserCubit>().state;
+
+                      if (state is UserLoaded) {
+                        context.read<FoodCubit>().getFoods();
+                        context.read<TransactionCubit>().getTransactions();
+                        Get.to(() => SuccessSignUpPage());
+                      } else {
+                        Get.snackbar(
+                          '',
+                          '',
+                          backgroundColor: 'D9435E'.toColor(),
+                          icon: Icon(
+                            MdiIcons.closeCircleOutline,
+                            color: Colors.white,
+                          ),
+                          titleText: Text(
+                            'Sign In Failed',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          messageText: Text(
+                            'Please try again later',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
+                    child: Text(
+                      'Create Account',
+                      style: blackFontStyle3.copyWith(color: Colors.white),
                     ),
-                  );
-                  setState(() {
-                    isLoading = false;
-                  });
-                }
-              },
-              child: Text(
-                'Create Account',
-                style: blackFontStyle3.copyWith(color: Colors.white),
-              ),
-            ),
+                  ),
           ),
         ],
       ),
