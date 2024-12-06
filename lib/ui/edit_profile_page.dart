@@ -226,33 +226,93 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
               // Save Profile
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                      right: 10,
-                    ),
-                    child: (isLoading == true)
-                        ? loadingIndicator
-                        : ElevatedButton(
-                      onPressed: (){
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: 24),
+                height: 45,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: (isLoading == true)
+                    ? loadingIndicator
+                    : ElevatedButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          User user =
+                              (context.read<UserCubit>().state as UserLoaded)
+                                  .user
+                                  .copyWith(
+                                    name: nameController.text,
+                                    phoneNumber: phoneNumberController.text,
+                                    houseNumber: houseNumberController.text,
+                                    address: addressController.text,
+                                    city: cityController.text,
+                                  );
+
+                          ApiReturnValue<User> result = await UserServices.updateProfile(user);
+
+                          if(result.value != null){
+                            context.read<UserCubit>().getUser(result.value!);
+                            Get.snackbar(
+                              '',
+                              '',
+                              backgroundColor: '2ECC71'.toColor(),
+                              icon: Icon(
+                                MdiIcons.checkCircleOutline,
+                                color: Colors.white,
+                              ),
+                              titleText: Text(
+                                'Update Profile Success',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              messageText: Text(
+                                'Your Profile has been updated  ',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          } else {
+                            Get.snackbar(
+                              '',
+                              '',
+                              backgroundColor: 'D9435E'.toColor(),
+                              icon: Icon(
+                                MdiIcons.closeCircleOutline,
+                                color: Colors.white,
+                              ),
+                              titleText: Text(
+                                'Update Profile Failed',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              messageText: Text(
+                                'Please try again later',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Get.back();
+                          context.read<UserCubit>().getUser(user);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "save profile",
-                        style: blackFontStyle3,
-                      ),
-                    ),
-                  ),
-                ],
+                        child: Text('Save Profile', style: blackFontStyle3,)),
               ),
             ],
           ),
